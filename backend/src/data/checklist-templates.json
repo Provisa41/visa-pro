@@ -1,0 +1,32 @@
+{
+  "de": {
+    "tourist": [
+      { "id": "passport", "title": "Загранпаспорт", "instruction": "Действителен минимум 3 месяца после поездки, 2+ чистые страницы.", "required": true },
+      { "id": "photo", "title": "Фото 35×45 мм", "instruction": "Биометрическое, светлый фон, не старше 6 месяцев.", "required": true },
+      { "id": "insurance", "title": "Медстраховка", "instruction": "Покрытие от 30 000 € на всю поездку.", "required": true },
+      { "id": "booking", "title": "Бронь отеля/жилья", "instruction": "Подтверждение на все дни поездки.", "required": true },
+      { "id": "finance", "title": "Справка о доходах", "instruction": "2-НДФЛ или выписка за 3–6 месяцев.", "required": true },
+      { "id": "application", "title": "Анкета", "instruction": "Заполнена на сайте консульства, распечатана и подписана.", "required": true }
+    ],
+    "business": [
+      { "id": "passport", "title": "Загранпаспорт", "instruction": "Действителен минимум 3 месяца после поездки.", "required": true },
+      { "id": "invitation", "title": "Приглашение от компании", "instruction": "Официальное приглашение с реквизитами принимающей стороны.", "required": true },
+      { "id": "insurance", "title": "Медстраховка", "instruction": "Покрытие от 30 000 €.", "required": true }
+    ]
+  },
+  "fr": {
+    "tourist": [
+      { "id": "passport", "title": "Загранпаспорт", "instruction": "Срок действия +3 месяца после визита.", "required": true },
+      { "id": "photo", "title": "Фото", "instruction": "35×45, светлый фон.", "required": true },
+      { "id": "insurance", "title": "Страховка Schengen", "instruction": "Минимум 30 000 €.", "required": true }
+    ]
+  },
+  "us": {
+    "tourist": [
+      { "id": "passport", "title": "Загранпаспорт", "instruction": "Действителен на весь период поездки.", "required": true },
+      { "id": "ds160", "title": "Форма DS-160", "instruction": "Заполнена онлайн, номер подтверждения.", "required": true },
+      { "id": "photo", "title": "Фото 5×5 см", "instruction": "По требованиям госдепартамента США.", "required": true },
+      { "id": "interview", "title": "Запись на интервью", "instruction": "Подтверждение даты в посольстве.", "required": true }
+    ]
+  }
+}

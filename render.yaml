@@ -1,0 +1,26 @@
+# Деплой backend на Render.com (бесплатный тариф)
+# https://render.com — создайте Blueprint или Web Service вручную по README
+
+services:
+  - type: web
+    name: visa-pro-api
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run db:generate --workspace=backend && npm run build --workspace=backend && npm run db:push --workspace=backend
+    startCommand: npm run start --workspace=backend
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false

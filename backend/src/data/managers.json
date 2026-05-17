@@ -1,0 +1,5 @@
+[
+  { "id": "m1", "name": "Анна Петрова", "specialties": ["de", "fr", "it"], "available": true },
+  { "id": "m2", "name": "Игорь Смирнов", "specialties": ["us", "gb"], "available": true },
+  { "id": "m3", "name": "Мария Козлова", "specialties": ["es", "gr", "ae"], "available": true }
+]

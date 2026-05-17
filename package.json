@@ -1,0 +1,23 @@
+{
+  "name": "visa-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Visa Pro — Telegram Mini App для оформления виз",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:bot": "npm run dev --workspace=bot",
+    "build": "npm run build --workspace=frontend && npm run build --workspace=backend",
+    "db:generate": "npm run db:generate --workspace=backend",
+    "db:push": "npm run db:push --workspace=backend"
+  },
+  "workspaces": [
+    "frontend",
+    "backend",
+    "bot"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

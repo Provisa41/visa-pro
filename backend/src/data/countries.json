@@ -1,0 +1,12 @@
+[
+  { "code": "de", "name": "Германия", "flag": "🇩🇪" },
+  { "code": "fr", "name": "Франция", "flag": "🇫🇷" },
+  { "code": "it", "name": "Италия", "flag": "🇮🇹" },
+  { "code": "es", "name": "Испания", "flag": "🇪🇸" },
+  { "code": "gr", "name": "Греция", "flag": "🇬🇷" },
+  { "code": "us", "name": "США", "flag": "🇺🇸" },
+  { "code": "gb", "name": "Великобритания", "flag": "🇬🇧" },
+  { "code": "cn", "name": "Китай", "flag": "🇨🇳" },
+  { "code": "jp", "name": "Япония", "flag": "🇯🇵" },
+  { "code": "ae", "name": "ОАЭ", "flag": "🇦🇪" }
+]

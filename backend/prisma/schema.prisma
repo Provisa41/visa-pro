@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  telegramId   BigInt   @unique
+  username     String?
+  firstName    String?
+  lastName     String?
+  photoUrl     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  checklists      ChecklistProgress[]
+  docChecks       DocCheck[]
+  consultations   Consultation[]
+  newsSubscriptions NewsSubscription[]
+  applications    Application[]
+}
+
+model Application {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country   String
+  visaType  String
+  status    String   @default("in_progress")
+  progress  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChecklistProgress {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country   String
+  visaType  String
+  items     Json
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([userId, country, visaType])
+}
+
+model DocCheck {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country   String
+  visaType  String
+  fileName  String
+  fileUrl   String?
+  report    Json
+  status    String   @default("completed")
+  createdAt DateTime @default(now())
+}
+
+model Consultation {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country     String
+  visaType    String
+  problem     String
+  preferredAt String?
+  contactType String   @default("chat")
+  managerId   String?
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model NewsSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country   String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, country])
+}

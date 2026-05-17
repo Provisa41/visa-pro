@@ -26,8 +26,9 @@ import {
   useGetFaqQuery,
   useGetManagersQuery,
   useCreateConsultationMutation,
-  useGetConsultationsQuery,
 } from '@/store/api';
+import { loadConsultations, saveConsultation } from '@/lib/localStore';
+import { useEffect } from 'react';
 
 export default function Consult() {
   const navigate = useNavigate();
@@ -36,7 +37,8 @@ export default function Consult() {
   const visaType = useSelector((s: RootState) => s.app.selectedVisaType);
   const { data: faq = [] } = useGetFaqQuery();
   const { data: managers = [] } = useGetManagersQuery(country);
-  const { data: history = [] } = useGetConsultationsQuery();
+  const [history, setHistory] = useState(loadConsultations());
+  useEffect(() => setHistory(loadConsultations()), []);
   const [create, { isLoading, isSuccess }] = useCreateConsultationMutation();
 
   const [problem, setProblem] = useState('');
@@ -45,7 +47,7 @@ export default function Consult() {
   const [managerId, setManagerId] = useState('');
 
   const submit = async () => {
-    await create({
+    const res = await create({
       country,
       visaType,
       problem,
@@ -53,6 +55,16 @@ export default function Consult() {
       contactType,
       managerId: managerId || undefined,
     }).unwrap();
+    const row = res as {
+      id: string;
+      country: string;
+      visaType: string;
+      problem: string;
+      status: string;
+      createdAt: string;
+    };
+    saveConsultation(row);
+    setHistory(loadConsultations());
     setProblem('');
   };
 

@@ -26,6 +26,7 @@ import {
   useSaveChecklistMutation,
   type ChecklistItem,
 } from '@/store/api';
+import { loadChecklist, saveChecklist as persistChecklist } from '@/lib/localStore';
 
 export default function Checklist() {
   const dispatch = useDispatch();
@@ -37,8 +38,15 @@ export default function Checklist() {
   const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
-    if (data?.items) setItems(data.items);
-  }, [data]);
+    if (!data?.items) return;
+    const saved = loadChecklist(country, visaType);
+    if (saved?.length) {
+      const map = new Map(saved.map((i) => [i.id, i.status]));
+      setItems(data.items.map((i) => ({ ...i, status: map.get(i.id) ?? i.status })));
+    } else {
+      setItems(data.items);
+    }
+  }, [data, country, visaType]);
 
   const updateStatus = (id: string, status: ChecklistItem['status']) => {
     setItems((prev) =>
@@ -47,6 +55,7 @@ export default function Checklist() {
   };
 
   const handleSave = async () => {
+    persistChecklist(country, visaType, items);
     await save({ country, visaType, items }).unwrap();
     refetch();
   };

@@ -23,9 +23,9 @@ import { setCountry, setVisaType } from '@/store/appSlice';
 import type { RootState } from '@/store';
 import {
   useAnalyzeDocumentMutation,
-  useGetDocHistoryQuery,
   type DocAnalysisReport,
 } from '@/store/api';
+import { loadDocHistory, saveDocCheck } from '@/lib/localStore';
 
 function ReportView({ report }: { report: DocAnalysisReport }) {
   const color = {
@@ -87,15 +87,34 @@ export default function DocCheck() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [report, setReport] = useState<DocAnalysisReport | null>(null);
   const [analyze, { isLoading, error }] = useAnalyzeDocumentMutation();
-  const { data: history = [] } = useGetDocHistoryQuery();
+  const history = loadDocHistory();
 
   const onFile = async (file: File) => {
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('country', country);
-    fd.append('visaType', visaType);
-    const res = await analyze(fd).unwrap();
+    const base64 = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        resolve(result.split(',')[1] ?? '');
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+    const res = await analyze({
+      fileName: file.name,
+      mimeType: file.type,
+      base64,
+      country,
+      visaType,
+    }).unwrap();
     setReport(res.report);
+    saveDocCheck({
+      id: res.id,
+      fileName: file.name,
+      country,
+      visaType,
+      report: res.report,
+      createdAt: res.createdAt,
+    });
   };
 
   return (

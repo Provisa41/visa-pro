@@ -14,11 +14,19 @@ import {
 import { useSelector } from 'react-redux';
 import type { RootState } from '@/store';
 import { useGetMeQuery, useGetCountriesQuery } from '@/store/api';
+import {
+  loadApplications,
+  loadDocHistory,
+  loadSubscriptions,
+} from '@/lib/localStore';
 
 export default function Profile() {
   const authUser = useSelector((s: RootState) => s.auth.user);
   const { data: me } = useGetMeQuery();
   const { data: countries = [] } = useGetCountriesQuery();
+  const applications = loadApplications();
+  const docChecks = loadDocHistory();
+  const newsSubscriptions = loadSubscriptions();
 
   const name =
     [me?.firstName ?? authUser?.firstName, me?.lastName ?? authUser?.lastName]
@@ -48,12 +56,12 @@ export default function Profile() {
         Подписки на новости
       </Typography>
       <Stack direction="row" flexWrap="wrap" gap={0.5} sx={{ mb: 2 }}>
-        {(me?.newsSubscriptions ?? []).length === 0 ? (
+        {newsSubscriptions.length === 0 ? (
           <Typography variant="body2" color="text.secondary">
             Нет подписок
           </Typography>
         ) : (
-          me?.newsSubscriptions.map((c) => (
+          newsSubscriptions.map((c) => (
             <Chip key={c} label={countryLabel(c)} size="small" />
           ))
         )}
@@ -62,12 +70,12 @@ export default function Profile() {
       <Typography variant="subtitle2" color="text.secondary" gutterBottom>
         Заявки
       </Typography>
-      {(me?.applications ?? []).length === 0 ? (
+      {applications.length === 0 ? (
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
           Пока нет заявок — начните с чек-листа
         </Typography>
       ) : (
-        me?.applications.map((a) => (
+        applications.map((a) => (
           <Card key={a.id} sx={{ mb: 1 }}>
             <CardContent sx={{ py: 1.5 }}>
               <Typography fontWeight={600}>
@@ -85,7 +93,7 @@ export default function Profile() {
         Последние проверки
       </Typography>
       <List dense disablePadding>
-        {(me?.docChecks as Array<{ id: string; fileName: string; createdAt: string }> ?? []).map(
+        {docChecks.map(
           (d) => (
             <ListItem key={d.id} disablePadding sx={{ py: 0.5 }}>
               <ListItemText

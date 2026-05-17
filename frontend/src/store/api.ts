@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { RootState } from './index';
 
-const baseUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api';
+const baseUrl =
+  import.meta.env.VITE_API_URL ??
+  (import.meta.env.PROD ? '/api' : 'http://localhost:3001/api');
 
 export interface Country {
   code: string;
@@ -137,13 +139,19 @@ export const api = createApi({
       invalidatesTags: ['News', 'User'],
     }),
     analyzeDocument: builder.mutation<
-      { id: string; report: DocAnalysisReport },
-      FormData
+      { id: string; report: DocAnalysisReport; createdAt: string },
+      {
+        fileName: string;
+        mimeType: string;
+        base64: string;
+        country: string;
+        visaType: string;
+      }
     >({
-      query: (formData) => ({
+      query: (body) => ({
         url: '/documents/analyze',
         method: 'POST',
-        body: formData,
+        body,
       }),
       invalidatesTags: ['Docs', 'User'],
     }),

@@ -13,28 +13,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CountrySelect } from '@/components/CountrySelect';
 import { setCountry } from '@/store/appSlice';
 import type { RootState } from '@/store';
-import {
-  useGetNewsQuery,
-  useGetSubscriptionsQuery,
-  useSubscribeNewsMutation,
-  useUnsubscribeNewsMutation,
-  useGetCountriesQuery,
-} from '@/store/api';
+import { useGetNewsQuery, useGetCountriesQuery } from '@/store/api';
+import { loadSubscriptions, saveSubscription } from '@/lib/localStore';
+import { useState, useEffect } from 'react';
 
 export default function News() {
   const dispatch = useDispatch();
   const country = useSelector((s: RootState) => s.app.selectedCountry);
   const { data: news = [] } = useGetNewsQuery({ country });
-  const { data: subs = [] } = useGetSubscriptionsQuery();
-  const [subscribe] = useSubscribeNewsMutation();
-  const [unsubscribe] = useUnsubscribeNewsMutation();
+  const [subs, setSubs] = useState<string[]>([]);
   const { data: countries = [] } = useGetCountriesQuery();
+
+  useEffect(() => {
+    setSubs(loadSubscriptions());
+  }, []);
 
   const isSubscribed = subs.includes(country);
 
-  const toggleSub = async () => {
-    if (isSubscribed) await unsubscribe(country).unwrap();
-    else await subscribe({ country }).unwrap();
+  const toggleSub = () => {
+    saveSubscription(country, !isSubscribed);
+    setSubs(loadSubscriptions());
   };
 
   const countryName = countries.find((c) => c.code === country)?.name;

@@ -17,10 +17,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CountrySelect } from '@/components/CountrySelect';
 import { setCountry } from '@/store/appSlice';
 import type { RootState } from '@/store';
-import {
-  useGetLatestApplicationQuery,
-  useGetCountriesQuery,
-} from '@/store/api';
+import { useGetCountriesQuery } from '@/store/api';
+import { loadLatestApplication } from '@/lib/localStore';
 
 const actions = [
   {
@@ -54,7 +52,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const country = useSelector((s: RootState) => s.app.selectedCountry);
   const { data: countries = [] } = useGetCountriesQuery();
-  const { data: application } = useGetLatestApplicationQuery();
+  const application = loadLatestApplication();
 
   const countryName =
     countries.find((c) => c.code === application?.country)?.name ??

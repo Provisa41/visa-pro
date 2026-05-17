@@ -18,9 +18,13 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.6.1"
+    "react-router-dom": "^7.6.1",
+    "@vercel/node": "^5.1.16",
+    "jsonwebtoken": "^9.0.2",
+    "openai": "^4.103.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
     "@vitejs/plugin-react": "^4.4.1",

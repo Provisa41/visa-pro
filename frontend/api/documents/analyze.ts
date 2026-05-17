@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import OpenAI from 'openai';
 import { cors, json } from '../lib/response.js';
 import { getAuth } from '../lib/auth.js';
-import templates from '../../backend/src/data/checklist-templates.json';
+import templates from '../data/checklist-templates.json';
 
 function mockReport(fileName: string) {
   return {

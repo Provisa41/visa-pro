@@ -27,6 +27,8 @@ import {
   type ChecklistItem,
 } from '@/store/api';
 import { loadChecklist, saveChecklist as persistChecklist } from '@/lib/localStore';
+import { PageHero } from '@/components/PageHero';
+import { images } from '@/theme/design';
 
 export default function Checklist() {
   const dispatch = useDispatch();
@@ -61,11 +63,15 @@ export default function Checklist() {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h5" fontWeight={700} gutterBottom>
-        Чек-лист
-      </Typography>
-
+    <Box>
+      <PageHero
+        title="Чек-лист документов"
+        subtitle="Отмечайте готовность к подаче в консульство"
+        image={images.passport}
+        height={160}
+        badge="Раздел I · Документы"
+      />
+      <Box sx={{ px: 2, pb: 2 }}>
       <Stack spacing={2} sx={{ mb: 2 }}>
         <CountrySelect
           value={country}
@@ -96,6 +102,10 @@ export default function Checklist() {
                 bgcolor: 'background.paper',
                 border: 1,
                 borderColor: 'divider',
+                boxShadow: (t) =>
+                  t.palette.mode === 'dark'
+                    ? 'none'
+                    : '0 2px 12px rgba(21,101,192,0.06)',
               }}
             >
               <ListItem
@@ -144,12 +154,13 @@ export default function Checklist() {
       <Button
         variant="contained"
         fullWidth
-        sx={{ mt: 2 }}
+        sx={{ mt: 2, py: 1.5, borderRadius: 2, fontWeight: 700 }}
         disabled={saving || items.length === 0}
         onClick={handleSave}
       >
         Сохранить прогресс
       </Button>
+      </Box>
     </Box>
   );
 }

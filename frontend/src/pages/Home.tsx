@@ -3,49 +3,22 @@ import {
   Typography,
   Grid,
   Card,
-  CardActionArea,
   CardContent,
   LinearProgress,
-  Stack,
+  Paper,
 } from '@mui/material';
-import ChecklistIcon from '@mui/icons-material/Checklist';
-import SmartToyIcon from '@mui/icons-material/SmartToy';
-import NewspaperIcon from '@mui/icons-material/Newspaper';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CountrySelect } from '@/components/CountrySelect';
+import { CountryQuickPick } from '@/components/CountryQuickPick';
+import { ActionCard } from '@/components/ActionCard';
+import { PageHero } from '@/components/PageHero';
 import { setCountry } from '@/store/appSlice';
 import type { RootState } from '@/store';
 import { useGetCountriesQuery } from '@/store/api';
 import { loadLatestApplication } from '@/lib/localStore';
-
-const actions = [
-  {
-    title: 'Чек-лист документов',
-    desc: 'Список и статусы по стране',
-    icon: <ChecklistIcon fontSize="large" color="primary" />,
-    path: '/checklist',
-  },
-  {
-    title: 'AI-проверка',
-    desc: 'Загрузите PDF или фото',
-    icon: <SmartToyIcon fontSize="large" color="primary" />,
-    path: '/doc-check',
-  },
-  {
-    title: 'Новости по визам',
-    desc: 'Изменения требований',
-    icon: <NewspaperIcon fontSize="large" color="primary" />,
-    path: '/news',
-  },
-  {
-    title: 'Консультация',
-    desc: 'Связь с менеджером',
-    icon: <SupportAgentIcon fontSize="large" color="primary" />,
-    path: '/consult',
-  },
-];
+import { actionCards, consularColors, images } from '@/theme/design';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -58,66 +31,154 @@ export default function Home() {
     countries.find((c) => c.code === application?.country)?.name ??
     countries.find((c) => c.code === country)?.name;
 
-  return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h5" fontWeight={700} gutterBottom>
-        Visa Pro
-      </Typography>
-      <Typography color="text.secondary" sx={{ mb: 2 }}>
-        Быстрый старт оформления визы
-      </Typography>
+  const countryFlag = countries.find((c) => c.code === country)?.flag ?? '🌍';
 
-      <CountrySelect
-        value={country}
-        onChange={(c) => dispatch(setCountry(c))}
-        fullWidth
+  return (
+    <Box>
+      <PageHero
+        title="Visa Pro"
+        subtitle="Официальный визовый сервис для граждан Российской Федерации"
+        image={images.hero}
+        height={240}
+        badge="Консульский портал"
       />
 
-      {application && (
-        <Card sx={{ mt: 2, mb: 2 }}>
-          <CardContent>
-            <Typography variant="subtitle2" color="text.secondary">
-              Последняя заявка
-            </Typography>
-            <Typography fontWeight={600}>
-              {countryName} · {application.visaType}
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 0.5 }}>
-              Статус: {application.status === 'ready' ? 'Готово' : 'В работе'}
-            </Typography>
-            <LinearProgress
-              variant="determinate"
-              value={application.progress}
-              sx={{ mt: 1, borderRadius: 1 }}
-            />
-            <Typography variant="caption" color="text.secondary">
-              {application.progress}% документов
-            </Typography>
-          </CardContent>
-        </Card>
-      )}
+      <Box sx={{ px: 2, pb: 2 }}>
+        <div className="consular-divider" />
 
-      <Grid container spacing={2} sx={{ mt: 1 }}>
-        {actions.map((a) => (
-          <Grid key={a.path} size={{ xs: 6 }}>
-            <Card>
-              <CardActionArea onClick={() => navigate(a.path)}>
-                <CardContent>
-                  <Stack spacing={1}>
-                    {a.icon}
-                    <Typography fontWeight={600} variant="body2">
-                      {a.title}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {a.desc}
-                    </Typography>
-                  </Stack>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+        <Paper
+          elevation={0}
+          sx={{
+            p: 2,
+            mb: 2,
+            borderRadius: 2,
+            border: `1px solid ${consularColors.border}`,
+            bgcolor: 'background.paper',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Box className="consular-seal">{countryFlag}</Box>
+          <Box sx={{ flex: 1 }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ textTransform: 'uppercase', letterSpacing: '0.08em' }}
+            >
+              Направление поездки
+            </Typography>
+            <Typography
+              fontWeight={700}
+              variant="h6"
+              sx={{ fontFamily: '"Cormorant Garamond", Georgia, serif' }}
+            >
+              {countries.find((c) => c.code === country)?.name ?? 'Выберите страну'}
+            </Typography>
+          </Box>
+        </Paper>
+
+        <CountrySelect
+          value={country}
+          onChange={(c) => dispatch(setCountry(c))}
+          fullWidth
+          size="small"
+        />
+
+        <Box sx={{ mt: 1.5 }}>
+          <CountryQuickPick
+            selected={country}
+            onSelect={(c) => dispatch(setCountry(c))}
+          />
+        </Box>
+
+        {application && (
+          <Card
+            sx={{
+              mb: 2,
+              mt: 2,
+              border: `1px solid ${consularColors.border}`,
+              bgcolor: 'background.paper',
+            }}
+          >
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                <FlightTakeoffIcon sx={{ color: consularColors.gold, fontSize: 20 }} />
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  sx={{ textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: '0.7rem' }}
+                >
+                  Статус заявки
+                </Typography>
+              </Box>
+              <Typography
+                fontWeight={700}
+                variant="h6"
+                sx={{ fontFamily: '"Cormorant Garamond", Georgia, serif' }}
+              >
+                {countryName}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Категория: {application.visaType} ·{' '}
+                {application.status === 'ready'
+                  ? 'Документы готовы к подаче'
+                  : 'Подготовка документов'}
+              </Typography>
+              <LinearProgress
+                variant="determinate"
+                value={application.progress}
+                sx={{
+                  mt: 2,
+                  height: 6,
+                  borderRadius: 3,
+                  bgcolor: consularColors.creamDark,
+                  '& .MuiLinearProgress-bar': {
+                    bgcolor: consularColors.gold,
+                  },
+                }}
+              />
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5 }}>
+                Выполнено: {application.progress}%
+              </Typography>
+            </CardContent>
+          </Card>
+        )}
+
+        <Typography
+          variant="subtitle1"
+          fontWeight={700}
+          sx={{
+            mb: 1.5,
+            fontFamily: '"Cormorant Garamond", Georgia, serif',
+            color: 'text.primary',
+          }}
+        >
+          Услуги портала
+        </Typography>
+
+        <Grid container spacing={1.5}>
+          {actionCards.map((a) => (
+            <Grid key={a.path} size={{ xs: 6 }}>
+              <ActionCard
+                title={a.title}
+                desc={a.desc}
+                image={a.image}
+                icon={a.icon}
+                onClick={() => navigate(a.path)}
+              />
+            </Grid>
+          ))}
+        </Grid>
+
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: 'block', mt: 2, textAlign: 'center', lineHeight: 1.5 }}
+        >
+          Информация носит справочный характер. Требования консульств могут изменяться.
+        </Typography>
+      </Box>
     </Box>
   );
 }

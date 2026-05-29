@@ -1,31 +1,37 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import WebApp from '@twa-dev/sdk';
 import { useMemo, type ReactNode } from 'react';
+import { consularColors } from './design';
 
 const tg = WebApp;
 
 function getTelegramColors() {
   const p = tg.themeParams;
+  const isDark = tg.colorScheme === 'dark';
   return {
-    bg: p.bg_color ?? (tg.colorScheme === 'dark' ? '#1c1c1e' : '#ffffff'),
-    text: p.text_color ?? (tg.colorScheme === 'dark' ? '#ffffff' : '#000000'),
-    hint: p.hint_color ?? '#8e8e93',
-    link: p.link_color ?? '#2481cc',
-    button: p.button_color ?? '#2481cc',
-    buttonText: p.button_text_color ?? '#ffffff',
-    secondaryBg: p.secondary_bg_color ?? (tg.colorScheme === 'dark' ? '#2c2c2e' : '#f2f2f7'),
+    isDark,
+    bg: p.bg_color ?? (isDark ? consularColors.navy : consularColors.cream),
+    text: p.text_color ?? (isDark ? consularColors.textOnDark : consularColors.navy),
+    hint: p.hint_color ?? consularColors.textMuted,
+    button: p.button_color ?? consularColors.navyMid,
+    secondaryBg: p.secondary_bg_color ?? (isDark ? consularColors.navyMid : '#ffffff'),
   };
 }
 
 export function TelegramThemeProvider({ children }: { children: ReactNode }) {
   const theme = useMemo(() => {
     const c = getTelegramColors();
-    const isDark = tg.colorScheme === 'dark';
 
     return createTheme({
       palette: {
-        mode: isDark ? 'dark' : 'light',
-        primary: { main: c.button },
+        mode: c.isDark ? 'dark' : 'light',
+        primary: {
+          main: c.isDark ? consularColors.gold : consularColors.navyMid,
+          contrastText: c.isDark ? consularColors.navy : '#fff',
+        },
+        secondary: {
+          main: consularColors.gold,
+        },
         background: {
           default: c.bg,
           paper: c.secondaryBg,
@@ -34,11 +40,23 @@ export function TelegramThemeProvider({ children }: { children: ReactNode }) {
           primary: c.text,
           secondary: c.hint,
         },
+        divider: consularColors.border,
       },
-      shape: { borderRadius: 12 },
+      shape: { borderRadius: 8 },
       typography: {
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        fontFamily: '"Source Sans 3", -apple-system, sans-serif',
+        h4: {
+          fontFamily: '"Cormorant Garamond", Georgia, serif',
+          fontWeight: 700,
+        },
+        h5: {
+          fontFamily: '"Cormorant Garamond", Georgia, serif',
+          fontWeight: 700,
+        },
+        h6: {
+          fontFamily: '"Cormorant Garamond", Georgia, serif',
+          fontWeight: 600,
+        },
       },
       components: {
         MuiButton: {
@@ -46,16 +64,38 @@ export function TelegramThemeProvider({ children }: { children: ReactNode }) {
             root: {
               textTransform: 'none',
               fontWeight: 600,
-              borderRadius: 12,
+              borderRadius: 6,
+              letterSpacing: '0.02em',
+            },
+            contained: {
+              background: consularColors.navyMid,
+              '&:hover': {
+                background: consularColors.navy,
+              },
             },
           },
         },
         MuiCard: {
           styleOverrides: {
             root: {
-              borderRadius: 16,
-              boxShadow: 'none',
-              border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
+              borderRadius: 8,
+              boxShadow: '0 2px 12px rgba(10, 22, 40, 0.08)',
+              border: `1px solid ${consularColors.creamDark}`,
+            },
+          },
+        },
+        MuiChip: {
+          styleOverrides: {
+            root: { borderRadius: 6 },
+            colorPrimary: {
+              borderColor: consularColors.gold,
+            },
+          },
+        },
+        MuiPaper: {
+          styleOverrides: {
+            root: {
+              backgroundImage: 'none',
             },
           },
         },

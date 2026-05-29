@@ -26,6 +26,8 @@ import {
   type DocAnalysisReport,
 } from '@/store/api';
 import { loadDocHistory, saveDocCheck } from '@/lib/localStore';
+import { PageHero } from '@/components/PageHero';
+import { images } from '@/theme/design';
 
 function ReportView({ report }: { report: DocAnalysisReport }) {
   const color = {
@@ -118,16 +120,32 @@ export default function DocCheck() {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-        <IconButton onClick={() => navigate('/')}>
+    <Box>
+      <Box sx={{ position: 'relative' }}>
+        <IconButton
+          onClick={() => navigate('/')}
+          sx={{
+            position: 'absolute',
+            top: 12,
+            left: 12,
+            zIndex: 2,
+            bgcolor: 'rgba(10,22,40,0.7)',
+            color: '#f7f5f0',
+            border: '1px solid rgba(201,162,39,0.5)',
+            '&:hover': { bgcolor: 'rgba(10,22,40,0.9)' },
+          }}
+        >
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h5" fontWeight={700}>
-          AI-проверка
-        </Typography>
-      </Stack>
-
+        <PageHero
+          title="AI-проверка"
+          subtitle="Загрузите фото или PDF — умный анализ документов"
+          image={images.documents}
+          height={170}
+          badge="Экспертная проверка"
+        />
+      </Box>
+      <Box sx={{ px: 2, pb: 2 }}>
       <Stack spacing={2} sx={{ mb: 2 }}>
         <CountrySelect
           value={country}
@@ -158,6 +176,7 @@ export default function DocCheck() {
         startIcon={<CloudUploadIcon />}
         disabled={isLoading}
         onClick={() => inputRef.current?.click()}
+        sx={{ py: 1.5, borderRadius: 2, fontWeight: 700 }}
       >
         {isLoading ? 'Анализ...' : 'Загрузить документ'}
       </Button>
@@ -193,6 +212,7 @@ export default function DocCheck() {
       <Button sx={{ mt: 2 }} fullWidth onClick={() => navigate('/consult')}>
         Отправить менеджеру
       </Button>
+      </Box>
     </Box>
   );
 }

@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { cors, json } from './lib/response.js';
+import { cors, json } from './lib/response';
 import managers from './data/managers.json';
 
 export default function handler(req: VercelRequest, res: VercelResponse) {

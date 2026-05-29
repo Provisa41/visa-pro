@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { cors, json } from '../../lib/response.js';
-import { getAuth } from '../../lib/auth.js';
+import { cors, json } from '../../lib/response';
+import { getAuth } from '../../lib/auth';
 import templates from '../../data/checklist-templates.json';
 
 type Item = {

@@ -29,6 +29,8 @@ import {
 } from '@/store/api';
 import { loadConsultations, saveConsultation } from '@/lib/localStore';
 import { useEffect } from 'react';
+import { PageHero } from '@/components/PageHero';
+import { images } from '@/theme/design';
 
 export default function Consult() {
   const navigate = useNavigate();
@@ -69,16 +71,32 @@ export default function Consult() {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-        <IconButton onClick={() => navigate('/')}>
+    <Box>
+      <Box sx={{ position: 'relative' }}>
+        <IconButton
+          onClick={() => navigate('/')}
+          sx={{
+            position: 'absolute',
+            top: 12,
+            left: 12,
+            zIndex: 2,
+            bgcolor: 'rgba(10,22,40,0.7)',
+            color: '#f7f5f0',
+            border: '1px solid rgba(201,162,39,0.5)',
+            '&:hover': { bgcolor: 'rgba(10,22,40,0.9)' },
+          }}
+        >
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h5" fontWeight={700}>
-          Консультация
-        </Typography>
-      </Stack>
-
+        <PageHero
+          title="Консультация"
+          subtitle="Визовый менеджер ответит в Telegram"
+          image={images.consult}
+          height={170}
+          badge="Приём обращений"
+        />
+      </Box>
+      <Box sx={{ px: 2, pb: 2 }}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         FAQ перед обращением
       </Typography>
@@ -181,6 +199,7 @@ export default function Consult() {
           ))}
         </>
       )}
+      </Box>
     </Box>
   );
 }

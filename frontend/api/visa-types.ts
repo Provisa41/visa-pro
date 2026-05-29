@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { cors, json } from './lib/response.js';
+import { cors, json } from './lib/response';
 
 const VISA_TYPES = [
   { id: 'tourist', label: 'Туристическая' },

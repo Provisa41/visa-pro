@@ -19,6 +19,8 @@ import {
   loadDocHistory,
   loadSubscriptions,
 } from '@/lib/localStore';
+import { PageHero } from '@/components/PageHero';
+import { images } from '@/theme/design';
 
 export default function Profile() {
   const authUser = useSelector((s: RootState) => s.auth.user);
@@ -37,9 +39,26 @@ export default function Profile() {
     countries.find((c) => c.code === code)?.name ?? code;
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
-        <Avatar src={me?.photoUrl ?? authUser?.photoUrl ?? undefined} sx={{ width: 64, height: 64 }}>
+    <Box>
+      <PageHero
+        title="Профиль"
+        subtitle="Ваши заявки и история проверок"
+        image={images.profile}
+        height={150}
+        badge="Личный кабинет"
+      />
+      <Box sx={{ px: 2, pb: 2 }}>
+      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3, mt: -4 }}>
+        <Avatar
+          src={me?.photoUrl ?? authUser?.photoUrl ?? undefined}
+          sx={{
+            width: 72,
+            height: 72,
+            border: '3px solid',
+            borderColor: 'background.paper',
+            boxShadow: 2,
+          }}
+        >
           {name[0]}
         </Avatar>
         <Box>
@@ -108,6 +127,7 @@ export default function Profile() {
       <Button variant="outlined" fullWidth sx={{ mt: 3 }} disabled>
         Безопасность (MVP)
       </Button>
+      </Box>
     </Box>
   );
 }

@@ -26,12 +26,34 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <Box sx={{ pb: hideNav ? 0 : 8, minHeight: '100vh' }}>
+    <Box
+      className="app-shell"
+      sx={{
+        pb: hideNav ? 0 : 8,
+        minHeight: '100vh',
+        background: (t) =>
+          t.palette.mode === 'dark'
+            ? '#0a1628'
+            : '#f7f5f0',
+      }}
+    >
       {children}
       {!hideNav && (
         <Paper
-          sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 10 }}
-          elevation={8}
+          sx={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 10,
+            borderRadius: 0,
+            borderTop: '2px solid #c9a227',
+            background: (t) =>
+              t.palette.mode === 'dark'
+                ? '#1a2d4a'
+                : '#ffffff',
+          }}
+          elevation={0}
         >
           <BottomNavigation
             value={currentTab >= 0 ? currentTab : 0}

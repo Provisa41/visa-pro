@@ -16,6 +16,8 @@ import type { RootState } from '@/store';
 import { useGetNewsQuery, useGetCountriesQuery } from '@/store/api';
 import { loadSubscriptions, saveSubscription } from '@/lib/localStore';
 import { useState, useEffect } from 'react';
+import { PageHero } from '@/components/PageHero';
+import { images } from '@/theme/design';
 
 export default function News() {
   const dispatch = useDispatch();
@@ -38,11 +40,15 @@ export default function News() {
   const countryName = countries.find((c) => c.code === country)?.name;
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h5" fontWeight={700} gutterBottom>
-        Новости
-      </Typography>
-
+    <Box>
+      <PageHero
+        title="Новости по визам"
+        subtitle="Изменения правил и требований консульств"
+        image={images.news}
+        height={160}
+        badge="Официальные сведения"
+      />
+      <Box sx={{ px: 2, pb: 2 }}>
       <CountrySelect
         value={country}
         onChange={(c) => dispatch(setCountry(c))}
@@ -60,7 +66,16 @@ export default function News() {
       ) : (
         <Stack spacing={1.5}>
           {news.map((n) => (
-            <Card key={n.id}>
+            <Card
+              key={n.id}
+              sx={{
+                overflow: 'hidden',
+                boxShadow: (t) =>
+                  t.palette.mode === 'dark'
+                    ? 'none'
+                    : '0 4px 16px rgba(0,0,0,0.06)',
+              }}
+            >
               <CardContent>
                 <Stack direction="row" spacing={1} sx={{ mb: 0.5 }}>
                   {n.pinned && <Chip label="Важно" size="small" color="warning" />}
@@ -82,6 +97,7 @@ export default function News() {
           ))}
         </Stack>
       )}
+      </Box>
     </Box>
   );
 }

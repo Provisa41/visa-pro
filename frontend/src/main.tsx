@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 import WebApp from '@twa-dev/sdk';
+import './index.css';
 import App from './App';
 import { store } from './store';
 import { TelegramThemeProvider } from './theme/TelegramThemeProvider';

@@ -66,7 +66,7 @@ export default function Checklist() {
     <Box>
       <PageHero
         title="Чек-лист документов"
-        subtitle="Отмечайте готовность к подаче в консульство"
+        subtitle="39 стран · туристические и деловые визы"
         image={images.passport}
         height={160}
         badge="Раздел I · Документы"

@@ -4,6 +4,8 @@ import { useMemo, type ReactNode } from 'react';
 import { consularColors } from './design';
 
 const tg = WebApp;
+const serif = '"Cormorant Garamond", Georgia, "Times New Roman", serif';
+const sans = '"Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
 function getTelegramColors() {
   const p = tg.themeParams;
@@ -29,9 +31,7 @@ export function TelegramThemeProvider({ children }: { children: ReactNode }) {
           main: c.isDark ? consularColors.gold : consularColors.navyMid,
           contrastText: c.isDark ? consularColors.navy : '#fff',
         },
-        secondary: {
-          main: consularColors.gold,
-        },
+        secondary: { main: consularColors.gold },
         background: {
           default: c.bg,
           paper: c.secondaryBg,
@@ -44,19 +44,18 @@ export function TelegramThemeProvider({ children }: { children: ReactNode }) {
       },
       shape: { borderRadius: 8 },
       typography: {
-        fontFamily: '"Source Sans 3", -apple-system, sans-serif',
-        h4: {
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontWeight: 700,
-        },
-        h5: {
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontWeight: 700,
-        },
-        h6: {
-          fontFamily: '"Cormorant Garamond", Georgia, serif',
-          fontWeight: 600,
-        },
+        fontFamily: sans,
+        fontSize: 16,
+        htmlFontSize: 18,
+        h4: { fontFamily: serif, fontWeight: 700, fontSize: '1.75rem' },
+        h5: { fontFamily: serif, fontWeight: 700, fontSize: '1.5rem' },
+        h6: { fontFamily: serif, fontWeight: 600, fontSize: '1.3rem' },
+        subtitle1: { fontSize: '1.1rem', fontWeight: 600 },
+        subtitle2: { fontSize: '1rem', fontWeight: 600 },
+        body1: { fontSize: '1.05rem', lineHeight: 1.6 },
+        body2: { fontSize: '1rem', lineHeight: 1.55 },
+        caption: { fontSize: '0.9rem' },
+        button: { fontSize: '1.05rem', fontWeight: 600 },
       },
       components: {
         MuiButton: {
@@ -65,13 +64,11 @@ export function TelegramThemeProvider({ children }: { children: ReactNode }) {
               textTransform: 'none',
               fontWeight: 600,
               borderRadius: 6,
-              letterSpacing: '0.02em',
+              padding: '10px 20px',
             },
             contained: {
               background: consularColors.navyMid,
-              '&:hover': {
-                background: consularColors.navy,
-              },
+              '&:hover': { background: consularColors.navy },
             },
           },
         },
@@ -86,17 +83,25 @@ export function TelegramThemeProvider({ children }: { children: ReactNode }) {
         },
         MuiChip: {
           styleOverrides: {
-            root: { borderRadius: 6 },
-            colorPrimary: {
-              borderColor: consularColors.gold,
+            root: { borderRadius: 6, fontSize: '0.95rem' },
+          },
+        },
+        MuiTextField: {
+          styleOverrides: {
+            root: {
+              '& .MuiInputBase-input': { fontSize: '1.05rem' },
+              '& .MuiInputLabel-root': { fontSize: '1rem' },
             },
           },
         },
-        MuiPaper: {
+        MuiToggleButton: {
           styleOverrides: {
-            root: {
-              backgroundImage: 'none',
-            },
+            root: { fontSize: '0.95rem', py: 1 },
+          },
+        },
+        MuiBottomNavigationAction: {
+          styleOverrides: {
+            label: { fontSize: '0.8rem' },
           },
         },
       },

@@ -6,7 +6,12 @@ import countries from './data/countries.json';
 import faq from './data/faq.json';
 import managers from './data/managers.json';
 import newsData from './data/news.json';
-import templates from './data/checklist-templates.json';
+import {
+  countryOverrides,
+  schengenBusiness,
+  schengenTourist,
+  SCHENGEN_COUNTRIES,
+} from './checklist-lib';
 
 const VISA_TYPES = [
   { id: 'tourist', label: 'Туристическая' },
@@ -24,9 +29,17 @@ type ChecklistItem = {
 };
 
 function getTemplate(country: string, visaType: string): ChecklistItem[] {
-  const countryData = templates[country as keyof typeof templates];
-  if (!countryData) return [];
-  return (countryData as Record<string, ChecklistItem[]>)[visaType] ?? [];
+  const override = countryOverrides[country]?.[visaType];
+  if (override?.length) return [...override];
+  if (visaType === 'business' && SCHENGEN_COUNTRIES.includes(country)) {
+    return [...schengenBusiness];
+  }
+  if (visaType === 'tourist' && SCHENGEN_COUNTRIES.includes(country)) {
+    return [...schengenTourist];
+  }
+  if (visaType === 'tourist') return [...schengenTourist];
+  if (visaType === 'business') return [...schengenBusiness];
+  return [...schengenTourist];
 }
 
 function mockReport(fileName: string) {
@@ -222,16 +235,7 @@ export async function handleApi(
       json(res, 400, { error: 'fileName, base64, country, visaType обязательны' });
       return;
     }
-    const countryData = templates[country as keyof typeof templates];
-    const checklist =
-      countryData &&
-      (countryData as Record<string, { title: string; instruction: string }[]>)[
-        visaType
-      ]
-        ? (countryData as Record<string, { title: string; instruction: string }[]>)[
-            visaType
-          ]
-        : [];
+    const checklist = getTemplate(country, visaType);
     const checklistText = checklist
       .map((c) => `- ${c.title}: ${c.instruction}`)
       .join('\n');

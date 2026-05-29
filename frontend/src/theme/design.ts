@@ -13,7 +13,13 @@ export const images = {
   onboarding3: '/images/consular-official.png',
 } as const;
 
-/** Официальная палитра: тёмно-синий, золото, кремовый */
+/** Популярные направления для быстрого выбора */
+export const POPULAR_COUNTRY_CODES = [
+  'de', 'fr', 'it', 'es', 'gr', 'us', 'gb', 'cn', 'jp', 'ae',
+  'tr', 'th', 'pt', 'nl', 'at', 'cz', 'fi', 'in', 'kr', 'ca',
+  'pl', 'hu', 'ch', 'eg', 'me', 'kz', 'ge', 'rs', 'au', 'sg',
+] as const;
+
 export const consularColors = {
   navy: '#0a1628',
   navyMid: '#1a2d4a',

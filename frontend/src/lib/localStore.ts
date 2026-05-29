@@ -2,6 +2,33 @@ import type { ChecklistItem } from '@/store/api';
 
 const PREFIX = 'visa_pro_';
 
+export interface ClientProfile {
+  middleName?: string;
+}
+
+export function loadClientProfile(): ClientProfile {
+  try {
+    return JSON.parse(localStorage.getItem(`${PREFIX}profile`) ?? '{}') as ClientProfile;
+  } catch {
+    return {};
+  }
+}
+
+export function saveClientProfile(data: ClientProfile) {
+  const current = loadClientProfile();
+  localStorage.setItem(`${PREFIX}profile`, JSON.stringify({ ...current, ...data }));
+}
+
+export function formatFio(parts: {
+  lastName?: string | null;
+  firstName?: string | null;
+  middleName?: string | null;
+}): string {
+  const { lastName, firstName, middleName } = parts;
+  const fio = [lastName, firstName, middleName].filter(Boolean).join(' ');
+  return fio || 'Не указано';
+}
+
 export function loadChecklist(country: string, visaType: string): ChecklistItem[] | null {
   try {
     const raw = localStorage.getItem(`${PREFIX}checklist_${country}_${visaType}`);
